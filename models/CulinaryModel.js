@@ -3,8 +3,8 @@ import db from "../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const Hangout = db.define(
-  "Hangout",
+const Culinary = db.define(
+  "Culinary",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -30,7 +30,7 @@ const Hangout = db.define(
   },
   {
     freezeTableName: true,
-  }
+  },
 );
 
-export default Hangout;
+export default Culinary;

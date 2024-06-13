@@ -3,8 +3,8 @@ import db from "../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const Hangout = db.define(
-  "Hangout",
+const Destination = db.define(
+  "Destination",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -33,4 +33,4 @@ const Hangout = db.define(
   }
 );
 
-export default Hangout;
+export default Destination;
