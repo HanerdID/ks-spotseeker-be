@@ -49,6 +49,27 @@ const authController = {
       res.status(500).json({ message: err.message });
     }
   },
+
+  me: async (req, res) => {
+    if (!req.session.id) {
+      return res.status(401).json({ msg: "Mohon login ke akun Anda!" });
+    }
+    const user = await User.findOne({
+      attributes: ["id", "username", "email", "role"],
+      where: {
+        uuid: req.session.id,
+      },
+    });
+    if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+    res.status(200).json(user);
+  },
+
+  logout: (req, res) => {
+    req.session.destroy((err) => {
+      if (err) return res.status(400).json({ msg: "Tidak dapat logout" });
+      res.status(200).json({ msg: "Anda telah logout" });
+    });
+  },
 };
 
 export default authController;
