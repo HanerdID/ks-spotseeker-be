@@ -12,7 +12,7 @@ const authController = {
         email,
         password: hashedPassword,
       });
-      res.status(201).json({ message: "User registered successfully" });
+      res.status(201).json({ message: "User registered successfully", user });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -51,25 +51,23 @@ const authController = {
   },
 
   me: async (req, res) => {
-    if (!req.session.id) {
-      return res.status(401).json({ msg: "Mohon login ke akun Anda!" });
+    try {
+      const user = await User.findOne(req.userId, {
+        attributes: { exclude: ["password"] },
+      });
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
     }
-    const user = await User.findOne({
-      attributes: ["id", "username", "email", "role"],
-      where: {
-        uuid: req.session.id,
-      },
-    });
-    if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-    res.status(200).json(user);
   },
 
-  logout: (req, res) => {
-    req.session.destroy((err) => {
-      if (err) return res.status(400).json({ msg: "Tidak dapat logout" });
-      res.status(200).json({ msg: "Anda telah logout" });
-    });
-  },
+  logout: async (req, res) => {
+    try {
+      res.status(200).json({ message: "User logged out successfully" });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
 };
 
 export default authController;
